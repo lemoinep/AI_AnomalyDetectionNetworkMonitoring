@@ -1,0 +1,57 @@
+= AI-Based Network Intrusion Detection System
+
+== Program Overview: How Does It Work?
+
+This program is an *AI-powered Network Intrusion Detection System (NIDS)* written in Python. Its main goal is to monitor the network connections on your computer in real time, detect suspicious or abnormal activities, and automatically respond to threats by blocking internet access if necessary.
+
+=== How the Program Works
+
+. *Network Monitoring*
++
+The program uses the `psutil` library to continuously scan all active network connections on your computer. For each connection, it collects information such as:
+* Local and remote IP addresses and ports
+* Connection status (e.g., ESTABLISHED)
+* Process ID and name responsible for the connection
+* Timestamp
+
+. *Feature Extraction for AI*
++
+For each connection, the program extracts numerical features (like port numbers, process ID, status) that are relevant for machine learning analysis.
+
+. *AI-Based Anomaly Detection*
++
+An Isolation Forest model (a type of unsupervised machine learning algorithm) is used to analyze the extracted features. The model is trained on normal traffic to recognize what is typical for your system.
++
+If a connection appears significantly different from normal traffic, the AI model flags it as _anomalous_ (potentially an intrusion).
+
+. *Classic Security Options*
++
+In addition to AI, the program uses traditional security rules:
+* *Critical Ports*: If a connection uses a well-known dangerous port (like SSH, RDP, or ports often used by malware), it is flagged.
+* *IP Blacklist*: The program maintains a blacklist of known malicious IP addresses in a JSON file. If a connection involves a blacklisted IP, it is immediately flagged.
+* *Suspicious Processes*: Connections from known suspicious processes (like `telnet` or `meterpreter`) are flagged.
+* *Dynamic Blacklist*: If a new suspicious IP is detected, it is automatically added to the blacklist for future protection.
+
+. *Automated Response: Blocking Internet Access*
++
+If a critical intrusion is detected (by AI or classic rules), the program can automatically *disable your Wi-Fi connection* (or other network interface), effectively cutting off internet access to protect your system.
+* On Windows, it uses the `netsh` command to disable the Wi-Fi interface.
+* On Linux, it uses `nmcli` to turn off Wi-Fi.
+* This response helps prevent further malicious activity or data exfiltration.
+
+. *Reporting*
++
+All detected events and alerts are saved in a CSV report for later analysis.
+
+== Reminder: How Wi-Fi Connections Work
+
+*Wi-Fi* (Wireless Fidelity) allows your computer to connect to the internet or a local network without physical cables, using radio waves and a wireless router or access point.
+Your computer uses a *Wi-Fi network interface card (NIC)* to scan for available networks and establish a connection using security protocols (like WPA2).
+Once connected, your computer is assigned an IP address and can send/receive data over the internet.
+*Disabling the Wi-Fi interface* (as this program does in case of intrusion) immediately disconnects your computer from all wireless networks, stopping all internet activity until re-enabled.
+
+== Why Use AI for Intrusion Detection?
+
+Traditional rule-based systems can only detect known threats (signatures, blacklists, specific ports).
+*AI-based systems* can identify new, unknown, or subtle attacks by learning what is “normal” and flagging anything unusual—even if it’s never been seen before.
+Combining AI with classic rules provides a more robust and adaptive defense.
