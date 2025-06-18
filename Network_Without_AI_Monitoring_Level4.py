@@ -9,6 +9,7 @@ import json
 import os
 import platform
 import bluetooth 
+import sys
 
 # File for storing the blacklist of malicious IPs
 MALICIOUS_IPS_FILE = "malicious_ips.json"
@@ -36,7 +37,7 @@ CRITICAL_PORTS = {
 
 
 # List of authorized Bluetooth MAC addresses
-AUTHORIZED_BLUETOOTH_MACS = {""}
+AUTHORIZED_BLUETOOTH_MACS  = set()
 
 
 def build_bluetooth_macs():
@@ -70,7 +71,7 @@ def build_bluetooth_macs():
     return authorized
     
 
-def save_bluetooth_macs(mac_set, filename="list_bluetooth_macs.json"):
+def save_bluetooth_macs(mac_set, filename="authorized_bluetooth_macs.json"):
     """
     Saves the set of authorized Bluetooth MAC addresses to a JSON file.
     :param mac_set: set of MAC addresses (strings)
@@ -264,8 +265,8 @@ def main():
     bluetooth_blocked = False
     
     # List of authorized Bluetooth MAC addresses
-    LIST_BLUETOOTH_MACS_ALPHA = build_bluetooth_macs()
-    save_bluetooth_macs(LIST_BLUETOOTH_MACS)
+    #LIST_BLUETOOTH_MACS_ALPHA = build_bluetooth_macs()
+    #save_bluetooth_macs(LIST_BLUETOOTH_MACS)
     
     # AUTHORIZED_BLUETOOTH_MACS only on your laptop
     AUTHORIZED_BLUETOOTH_MACS = load_authorized_bluetooth_macs()
@@ -324,5 +325,14 @@ def main():
         # Wait 60 seconds before next check
         time.sleep(60)
 
+
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "setup":
+        # Setup mode: build and save authorized MACs
+        authorized_macs = build_bluetooth_macs()
+        save_bluetooth_macs(authorized_macs)
+        print("Bluetooth MACs saved! You can now run in surveillance mode.")
+    else:
+        main()
+        
+        
