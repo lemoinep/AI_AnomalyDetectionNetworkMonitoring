@@ -19,17 +19,21 @@ import re
 import subprocess
 import time
 import logging
+import random
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 
 try:
     import bluetooth
 except ImportError:
     bluetooth = None
 
-# Loggins Configuration
+# Logging Configuration
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-ToBeChecked_BLUETOOTH_MACS_FILE = "ToBeChecked_bluetooth_macs.json"
+TO_BE_CHECKED_BLUETOOTH_MACS_FILE = "ToBeChecked_bluetooth_macs.json"
 
 def estimate_distance_from_rssi(rssi, tx_power=-59):
     """
@@ -95,10 +99,10 @@ def scan_bluetooth_other():
         logger.error(f"Bluetooth scan error: {e}")
         return []
 
-def build_ToBeChecked_bluetooth_macs():
+def build_to_be_checked_bluetooth_macs():
     """
-    Scan for nearby Bluetooth devices and prompt the user to select ToBeChecked devices.
-    Returns a set of ToBeChecked MAC addresses.
+    Scan for nearby Bluetooth devices and prompt the user to select trusted devices.
+    Returns a set of trusted MAC addresses.
     """
     os_name = platform.system()
     scan_duration = int(input("Enter scan duration (seconds, default 8): ") or 8)
@@ -115,7 +119,7 @@ def build_ToBeChecked_bluetooth_macs():
             print(f"{idx+1}. {name} ({addr}) | RSSI: {rssi} dBm | Estimated distance: {distance:.2f} m")
         else:
             print(f"{idx+1}. {name} ({addr})")
-    ToBeChecked = set()
+    trusted = set()
     while True:
         user_input = input("\nEnter the numbers (comma-separated) of devices you want to authorize, or press Enter to skip: ")
         if not user_input.strip():
@@ -124,27 +128,27 @@ def build_ToBeChecked_bluetooth_macs():
             indices = [int(i.strip())-1 for i in user_input.split(",")]
             for i in indices:
                 if 0 <= i < len(devices):
-                    ToBeChecked.add(devices[i][0])
+                    trusted.add(devices[i][0])
             break
         except Exception as e:
             print(f"Invalid input: {e}. Please try again.")
-    print(f"\nToBeChecked_BLUETOOTH_MACS = {ToBeChecked}")
-    return ToBeChecked
+    print(f"\nTrusted Bluetooth MACs = {trusted}")
+    return trusted
 
-def save_ToBeChecked_bluetooth_macs(mac_set, filename=ToBeChecked_BLUETOOTH_MACS_FILE):
+def save_to_be_checked_bluetooth_macs(mac_set, filename=TO_BE_CHECKED_BLUETOOTH_MACS_FILE):
     """
-    Save the set of ToBeChecked MAC addresses to a JSON file.
+    Save the set of trusted MAC addresses to a JSON file.
     """
     try:
         with open(filename, "w") as f:
             json.dump(sorted(list(mac_set)), f, indent=2)
-        logger.info(f"Saved {len(mac_set)} ToBeChecked Bluetooth MAC addresses to {filename}")
+        logger.info(f"Saved {len(mac_set)} trusted Bluetooth MAC addresses to {filename}")
     except Exception as e:
         logger.error(f"Error saving file: {e}")
 
-def load_ToBeChecked_bluetooth_macs(filename=ToBeChecked_BLUETOOTH_MACS_FILE):
+def load_to_be_checked_bluetooth_macs(filename=TO_BE_CHECKED_BLUETOOTH_MACS_FILE):
     """
-    Load the set of ToBeChecked MAC addresses from a JSON file.
+    Load the set of trusted MAC addresses from a JSON file.
     Returns a set of MAC addresses.
     """
     try:
@@ -154,24 +158,56 @@ def load_ToBeChecked_bluetooth_macs(filename=ToBeChecked_BLUETOOTH_MACS_FILE):
         logger.error(f"Error loading file: {e}")
         return set()
 
-def detect_bluetooth_intrusion(devices, ToBeChecked_macs):
+def detect_bluetooth_intrusion(devices, trusted_macs):
     """
-    Compare detected devices with the ToBeChecked list.
-    Returns a list of alert messages for unToBeChecked devices.
+    Compare detected devices with the trusted list.
+    Returns a list of alert messages for untrusted devices.
     """
     alerts = []
     for addr, name, rssi, distance in devices:
-        if addr not in ToBeChecked_macs:
+        if addr not in trusted_macs:
             if rssi is not None:
                 alerts.append(f"Bluetooth intrusion detected: {name} ({addr}) | RSSI: {rssi} dBm | Estimated distance: {distance:.2f} m")
             else:
                 alerts.append(f"Bluetooth intrusion detected: {name} ({addr})")
     return alerts
 
+def plot_bluetooth_devices_3d(devices):
+    """
+    Display detected Bluetooth devices in a 3D space.
+    If the distance is known, it is used as the radius.
+    Angles are assigned randomly due to lack of directionality.
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    for idx, (mac, name, rssi, distance) in enumerate(devices):
+        if distance is not None and distance > 0:
+            # Random placement on a sphere of radius = distance
+            theta = random.uniform(0, 2 * np.pi)  # azimuth
+            phi = random.uniform(0, np.pi)        # elevation
+            x = distance * np.sin(phi) * np.cos(theta)
+            y = distance * np.sin(phi) * np.sin(theta)
+            z = distance * np.cos(phi)
+        else:
+            # If no distance, place on a circle of arbitrary radius (e.g., 5)
+            angle = 2 * np.pi * idx / max(1, len(devices))
+            x, y, z = 5 * np.cos(angle), 5 * np.sin(angle), 0
+
+        ax.scatter(x, y, z, label=f"{name} ({mac})")
+        ax.text(x, y, z, name, fontsize=8)
+
+    ax.set_xlabel('X (m)')
+    ax.set_ylabel('Y (m)')
+    ax.set_zlabel('Z (m)')
+    ax.set_title('Estimated positions of Bluetooth sources')
+    plt.legend()
+    plt.show()
+
 if __name__ == "__main__":
-    print("=== Build list of ToBeChecked Bluetooth devices ===")
-    ToBeChecked_macs = build_ToBeChecked_bluetooth_macs()
-    save_ToBeChecked_bluetooth_macs(ToBeChecked_macs)
+    print("=== Build list of trusted Bluetooth devices ===")
+    trusted_macs = build_to_be_checked_bluetooth_macs()
+    save_to_be_checked_bluetooth_macs(trusted_macs)
 
     print("\n=== Bluetooth scan and intrusion detection ===")
     os_name = platform.system()
@@ -181,11 +217,18 @@ if __name__ == "__main__":
     else:
         devices = scan_bluetooth_other()
 
-    ToBeChecked_macs = load_ToBeChecked_bluetooth_macs()
-    alerts = detect_bluetooth_intrusion(devices, ToBeChecked_macs)
+    trusted_macs = load_to_be_checked_bluetooth_macs()
+    alerts = detect_bluetooth_intrusion(devices, trusted_macs)
     if alerts:
         print("\nALERTS:")
         for alert in alerts:
             print(alert)
     else:
         print("No intrusion detected.")
+
+    # Optional: Offer 3D visualization if any distances are available
+    if any(d[3] is not None for d in devices):
+        show_3d = input("\nWould you like to display a 3D representation of estimated positions? (y/n): ")
+        if show_3d.lower().startswith('y'):
+            plot_bluetooth_devices_3d(devices)
+
