@@ -22,3 +22,5 @@ AI_AnomalyDetectionNetworkMonitoring repository based on the filenames and typic
 
 - ScanBluetoothInformation.py: Scans and collects Bluetooth device information in the network environment, potentially to detect anomalies or unauthorized devices via Bluetooth traffic analysis.
 
+- ScanBluetoothInformation3D.py: Scans Bluetooth devices, collects signal data from multiple positions, and uses trilateration to estimate and visualize their 3D locations.
+
