@@ -24,3 +24,5 @@ AI_AnomalyDetectionNetworkMonitoring repository based on the filenames and typic
 
 - ScanBluetoothInformation3D.py: Scans Bluetooth devices, collects signal data from multiple positions, and uses trilateration to estimate and visualize their 3D locations.
 
+- RealTimeIPVisualizer.py : This program visualizes IP addresses in real-time as colored 3D cubes based on their frequency, combining the last two octets in the Z-coordinate, with interactive tooltips showing full IP details. This allows you to see what's going on on your PC.
+
