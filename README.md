@@ -28,4 +28,8 @@ AI_AnomalyDetectionNetworkMonitoring repository based on the filenames and typic
 
 - BluetoothEarphone3DHeadPositionEstimator.py : This program detects, tracks, and estimates the 3D positions of nearby Bluetooth devices, such as wireless earphones.   It uses Kalman-filtered RSSI measurements combined with trilateration to improve accuracy.   It also supports trusted device lists, intrusion alerts, and optional 3D visualization.
 
+- Network_AI_Monitoring_Level6.py:  Network/Bluetooth monitoring, advanced detection with AI + adaptive standby.
+  Preparation and development of a barrier against artificial intelligence viruses.
+  Remark it is only a draft for instance... I invite you to follow its development.
+
 Nota : The ultimate goal will be to bring together all my detection developments, including sound-based detection, and add artificial intelligence to perform data fusion for detections that may later be used for robots. There is still a lot of work to be done.
