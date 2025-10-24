@@ -38,10 +38,10 @@ def load_patterns(file=PATTERNS_FILE):
     try:
         with open(file, "r") as f:
             patt = json.load(f)
-            print(f"[ThreatIntel] Patterns IA chargés ({len(patt)} patterns).")
+            print(f"[ThreatIntel] Loaded AI Patterns ({len(patt)} patterns).")
             return set(patt)
     except Exception as e:
-        print(f"[ThreatIntel] Erreur chargement patterns: {e}")
+        print(f"[ThreatIntel] Error loading patterns: {e}")
         # fallback = patterns basiques
         return {"python*", "powershell*", "wscript*", "svchost.exe", "meterpreter", "malware*", "shell*", "randomized_exe"}
 
@@ -50,16 +50,16 @@ SUSPICIOUS_PROCESS_PATTERNS = load_patterns()
 def load_ml_model(path=ML_MODEL_PATH):
     try:
         model = joblib.load(path)
-        print("[ML] Modèle Random Forest chargé avec succès.")
+        print("[ML] Random Forest model loaded successfully..")
         return model
     except Exception as e:
-        print(f"[ML] Erreur au chargement du modèle: {e}")
+        print(f"[ML] Error loading model: {e}")
         return None
 
 ml_model = load_ml_model()
 
 def extract_conn_features(conn):
-    """Retourne les features au format numpy array pour le modèle ML"""
+    """Returns features in numpy array format for the ML model"""
     try:
         remote_ip, remote_port = conn['raddr'].split(':')
         port = int(remote_port)
@@ -148,12 +148,12 @@ def detect_advanced_intrusion(conn, malicious_ips):
         pass
 
     if port in CRITICAL_PORTS:
-        alerts.append(f"Connexion port critique {port} ({CRITICAL_PORTS[port]})")
+        alerts.append(f"Critical port connection {port} ({CRITICAL_PORTS[port]})")
         add_ip = True
     if remote_ip in malicious_ips:
-        alerts.append("IP malveillante connue")
+        alerts.append("IP known malicious")
     if conn['process'] in ['explorer.exe', 'svchost.exe'] and port > 1024:
-        alerts.append("Process système sur port non privilégié")
+        alerts.append("System process on unprivileged port")
         add_ip = True
     if port == 53 and conn['process'] not in ['dnsmasq', 'named', 'systemd-resolved']:
         alerts.append("Trafic DNS inhabituel")
@@ -161,10 +161,10 @@ def detect_advanced_intrusion(conn, malicious_ips):
     proc_name = conn['process'].lower()
     for pattern in SUSPICIOUS_PROCESS_PATTERNS:
         if proc_name.startswith(pattern.replace("*", "")):
-            alerts.append(f"Process suspect pattern IA : {proc_name}")
+            alerts.append(f"Suspicious process pattern IA : {proc_name}")
             add_ip = True
     if port > 50000:
-        alerts.append("Port très élevé suspect")
+        alerts.append("Suspect very high port")
         add_ip = True
     if 'exe_path' in conn and conn['exe_path'] and not any(conn['exe_path'].startswith(path) for path in ["C:\\Windows\\System32", "/usr/bin/", "/bin/"]):
         alerts.append(f"Exécution chemin inhabituel : {conn['exe_path']}")
@@ -250,13 +250,13 @@ def main():
                 alert_msg = " | ".join(alerts)
                 if ml_score > 0.7:
                     alert_msg += f" [ML suspicion score: {ml_score:.2f}]"
-                print(f"ALERT: {alert_msg} - Connexion: {conn}")
+                print(f"ALERT: {alert_msg} - Connection: {conn}")
                 conn['ALERT'] = alert_msg
                 intrusion_detected = True
                 if new_ip:
                     malicious_ips.add(new_ip)
                     updated = True
-                    print(f"Nouvelle IP ajoutée à la blacklist: {new_ip}")
+                    print(f"New IP added to the blacklist: {new_ip}")
             else:
                 conn['ALERT'] = ''
             report.append(conn)
