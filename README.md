@@ -32,7 +32,13 @@ AI_AnomalyDetectionNetworkMonitoring repository based on the filenames and typic
   Preparation and development of a barrier against artificial intelligence viruses.
   Remark it is only a draft for instance... I invite you to follow its development.
   
-- WirelessLANAnalyzer.py : This application scans available WiFi networks and detects devices connected to your local network. It works on Windows and Linux, provides signal strength, and identifies device manufacturers, making network management simple and efficient.
+- WirelessLANAnalyzer.py: This application scans available WiFi networks and detects devices connected to your local network. It works on Windows and Linux, provides signal strength, and identifies device manufacturers, making network management simple and efficient.
 
-Nota : The ultimate goal will be to bring together all my detection developments, including sound-based detection, and add artificial intelligence to perform data fusion for detections that may later be used for robots. There is still a lot of work to be done.
+- WirelessDeviceInspector.py: This is a tool that automatically scans your local WiFi or Ethernet network, detects all connected phones and laptops, and displays or exports the results.
+It dynamically adapts to your network range, making it easy to monitor device presence across different environments.
+
+
+Nota : The ultimate goal will be to bring together all my detection developments, including sound-based detection, and add artificial intelligence to perform data fusion for detections that may later be used for robots. 
+I also plan to add a 3D spatial representation of the data in future developments. I'm currently thinking about the best method to achieve this. Later, this will serve as a way to visualize how the robot perceives its environment
+There is still a lot of work to be done.
 
