@@ -39,6 +39,9 @@ It dynamically adapts to your network range, making it easy to monitor device pr
 
 
 Nota : The ultimate goal will be to bring together all my detection developments, including sound-based detection, and add artificial intelligence to perform data fusion for detections that may later be used for robots. 
-I also plan to add a 3D spatial representation of the data in future developments. I'm currently thinking about the best method to achieve this. Later, this will serve as a way to visualize how the robot perceives its environment
-There is still a lot of work to be done.
+
+I also plan to add a 3D spatial representation of the data in future developments. I'm currently thinking about the best method to achieve this. Later, this will serve as a way to visualize how the robot perceives its environment.
+
+There is still a lot of work to be done, but I’m confident I’ll get there. I invite you to follow my progress as I continue developing.
+
 
