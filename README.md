@@ -31,5 +31,8 @@ AI_AnomalyDetectionNetworkMonitoring repository based on the filenames and typic
 - Network_AI_Monitoring_Level6.py:  Network/Bluetooth monitoring, advanced detection with AI + adaptive standby.
   Preparation and development of a barrier against artificial intelligence viruses.
   Remark it is only a draft for instance... I invite you to follow its development.
+  
+- WirelessLANAnalyzer.py : This application scans available WiFi networks and detects devices connected to your local network. It works on Windows and Linux, provides signal strength, and identifies device manufacturers, making network management simple and efficient.
 
 Nota : The ultimate goal will be to bring together all my detection developments, including sound-based detection, and add artificial intelligence to perform data fusion for detections that may later be used for robots. There is still a lot of work to be done.
+
