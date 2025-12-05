@@ -1,4 +1,12 @@
+# AI Anomaly Detection Network Monitoring
+
+<img src="Images/P0001.jpg" width="75%" />
+
+## Objective
+
 This project implements an AI-powered network anomaly detection system designed to monitor and analyze network traffic in real time. Using machine learning techniques, the programs automatically identify unusual patterns and deviations from normal network behavior that may indicate security threats, performance issues, or unauthorized access. The system collects and preprocesses network data, extracts relevant features, trains anomaly detection models, and provides real-time alerts and visualizations to help network administrators quickly detect and respond to potential anomalies. Its adaptive approach reduces false positives by learning normal traffic patterns and continuously improving through feedback and retraining.
+
+## Detailed Python Program Descriptions
 
 AI_AnomalyDetectionNetworkMonitoring repository based on the filenames and typical roles in network anomaly detection projects:
 
@@ -43,5 +51,6 @@ Nota : The ultimate goal will be to bring together all my detection developments
 I also plan to add a 3D spatial representation of the data in future developments. I'm currently thinking about the best method to achieve this. Later, this will serve as a way to visualize how the robot perceives its environment.
 
 There is still a lot of work to be done, but I’m confident I’ll get there. I invite you to follow my progress as I continue developing.
+
 
 
