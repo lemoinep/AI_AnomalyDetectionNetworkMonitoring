@@ -8,6 +8,8 @@ This project implements an AI-powered network anomaly detection system designed 
 
 ## Detailed Python Program Descriptions
 
+<img src="Images/P0002.jpg" width="75%" />
+
 AI_AnomalyDetectionNetworkMonitoring repository based on the filenames and typical roles in network anomaly detection projects:
 
 - AnalysisReportNetwork.py : Generates detailed analysis reports summarizing detected network anomalies, model performance metrics, and overall monitoring results.
