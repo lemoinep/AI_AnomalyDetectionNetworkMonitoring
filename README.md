@@ -8,7 +8,7 @@ This project implements an AI-powered network anomaly detection system designed 
 
 ## Detailed Python Program Descriptions
 
-<img src="Images/P0002.jpg" width="75%" />
+<img src="Images/P0002.jpg" width="100%" />
 
 AI_AnomalyDetectionNetworkMonitoring repository based on the filenames and typical roles in network anomaly detection projects:
 
@@ -54,5 +54,18 @@ I also plan to add a 3D spatial representation of the data in future development
 
 There is still a lot of work to be done, but I’m confident I’ll get there. I invite you to follow my progress as I continue developing.
 
+## For more information
 
+<img src="Images/Z20260109_000001.jpg" width="100%" />
+<img src="Images/Z20260109_000002.jpg" width="100%" />
+<img src="Images/Z20260109_000003.jpg" width="100%" />
+<img src="Images/Z20260109_000004.jpg" width="100%" />
+<img src="Images/Z20260109_000005.jpg" width="100%" />
+<img src="Images/Z20260109_000006.jpg" width="100%" />
+<img src="Images/Z20260109_000007.jpg" width="100%" />
+<img src="Images/Z20260109_000008.jpg" width="100%" />
+<img src="Images/Z20260109_000009.jpg" width="100%" />
+<img src="Images/Z20260109_000010.jpg" width="100%" />
+<img src="Images/Z20260109_000011.jpg" width="100%" />
+<img src="Images/Z20260109_000012.jpg" width="100%" />
 
