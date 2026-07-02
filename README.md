@@ -3,6 +3,10 @@
 [![Version](https://img.shields.io/badge/version-1.5-green.svg)](https://github.com/lemoinep/AI_AnomalyDetectionNetworkMonitoring)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
+[![AI](https://img.shields.io/badge/AI-anomaly--detection-red.svg)]()
+[![ML](https://img.shields.io/badge/ML-modeling-yellow.svg)]()
+[![Network](https://img.shields.io/badge/Network-monitoring-blue.svg)]()
+[![Detection](https://img.shields.io/badge/Detection-real--time-critical.svg)]()
 
 ---
 
